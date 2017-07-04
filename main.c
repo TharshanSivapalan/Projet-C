@@ -1,15 +1,16 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "header.h"
+
 
 int main()
 {
+    //afficher(charger("/Users/camille/Dropbox/test.csv"));
     int choix, temp, status;
-     while(1!=0)
+    while(1!=0)
     {
         do {
             printf("\n\t\tBanque\n\n",138);
             printf("Gestion des clients\n",138);
-
+            
             printf("\tPour ajouter  entrez '1'\n");
             printf("\tPour modifier entrez '2'\n",138);
             printf("\tPour supprimez entrez '3'\n");
@@ -29,41 +30,40 @@ int main()
         while((status!=1) && (((temp=getchar()) != EOF) &&(temp != '\n')) || (choix<1) || (choix>10));
         switch(choix)
         {
-        case 1 :
+            case 1 :
                 printf("C'est le choix 1");
-            break;
-        case 2 :
+                break;
+            case 2 :
                 printf("C'est le choix 2");
-            break;
-        case 3 :
+                break;
+            case 3 :
                 printf("C'est le choix 3");
-            break;
-        case 4 :
+                break;
+            case 4 :
                 printf("C'est le choix 4");
-            break;
-
-        case 5 :
+                break;
+                
+            case 5 :
                 printf("C'est le choix 5");
-            break;
-        case 6 :
+                break;
+            case 6 :
                 printf("C'est le choix 6");
-
-            break;
-        case 7 :
+                
+                break;
+            case 7 :
                 printf("C'est le choix 7");
-            break;
-        case 8 :
+                break;
+            case 8 :
                 printf("C'est le choix 8");
-            break;
-        case 9 :
-            printf("C'est le choix 9");
-            break;
-        case 10 :
-            printf("C'est le choix 10");
-        break;
-
+                break;
+            case 9 :
+                printf("C'est le choix 9");
+                break;
+            case 10 :
+                printf("C'est le choix 10");
+                break;
+                
         }
     }
     return 0;
 }
-
