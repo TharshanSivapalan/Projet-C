@@ -8,7 +8,7 @@
 
 #include "header.h"
 
-
+/** GLOBAL function **/
 const char* getfield(char* line, int num)
 {
     const char* tok;
@@ -22,11 +22,11 @@ const char* getfield(char* line, int num)
     return NULL;
 }
 
+/** User function **/
 
-//Ajouter une annonce
-ListeArray ajouterUser(ListeArray ListeArray, int id, char nom[], char prenom[], char metier[], char numero[])
+//Ajouter un user
+PListeUser ajouterUser(PListeUser PListeUser, int id, char nom[], char prenom[], char metier[], char numero[])
 {
-    
     ListeUser *listeNouveau = NULL;
     listeNouveau = malloc(sizeof(*listeNouveau));
     User *nouveau = NULL;
@@ -48,14 +48,14 @@ ListeArray ajouterUser(ListeArray ListeArray, int id, char nom[], char prenom[],
     
     listeNouveau->user = nouveau;
     listeNouveau->suivant = NULL;
-    if(ListeArray == NULL)
+    if(PListeUser == NULL)
     {
         return listeNouveau;
     }
     else
     {
         //Sinon, on parcourt la liste jusqu'au dernier élement
-        ListeUser *curseur = ListeArray;
+        ListeUser *curseur = PListeUser;
         while(curseur->suivant != NULL)
         {
             curseur = curseur->suivant;
@@ -63,62 +63,83 @@ ListeArray ajouterUser(ListeArray ListeArray, int id, char nom[], char prenom[],
         //On positionne le nouvel élément comme le dernier
         curseur->suivant = listeNouveau;
         //On retourne la liste
-        return ListeArray;
+        return PListeUser;
     }
 }
 
 //Afficher les annonces contenue dans la liste chainée
-void afficher(ListeArray listeArray)
+void afficherUserList(PListeUser PListeUser)
 {
-    ListeUser *ListeUser = listeArray;
+    ListeUser *ListeUser = PListeUser;
     int i=0;
-    printf("Id\tNom\tPrenom\tMetier\tNumero\n");
     while(ListeUser != NULL)
     {
         User *nouveau = ListeUser->user;
-        printf("%d\t", nouveau->id);
-        printf("%s\t", nouveau->nom);
-        printf("%s\t", nouveau->prenom);
-        printf("%s\t", nouveau->metier);
-        printf("%s\t", nouveau->numero);
+        displayUser(nouveau);
         ListeUser = ListeUser->suivant;
-        printf("\n");
         i++;
     }
     
-    printf("\(%d Annonces trouves)\n",i);
+    printf("\(%d User trouves)\n",i);
 }
 
-//Sauvegarde la liste d'annonce dans un fichier
-void sauvegarder(ListeArray listeArray,char cheminFichier[])
+void displayUser(User *user)
 {
+    printf("%d\t", user->id);
+    printf("%s\t", user->nom);
+    printf("%s\t", user->prenom);
+    printf("%s\t", user->metier);
+    printf("%s\t", user->numero);
+    printf("\n");
+
+}
+
+// return new id
+int newId(PListeUser PListeUser)
+{
+    int max = 0;
     
-//    FILE * fichier =fopen(cheminFichier,"w");
-//    if(fichier == NULL)
-//    {
-//        exit(EXIT_FAILURE);
-//    }
-//    //rewind(fichier);
-//    ListeAnnonce *listeAnnonce = listeArray;
-//    while(listeAnnonce != NULL)
-//    {
-//        Annonce *nouveau = listeAnnonce->annonce;
-//        fprintf(fichier, "%u ", nouveau->numero);
-//        fprintf(fichier, "%s ", nouveau->type);
-//        fprintf(fichier, "%hu ", nouveau->nombre_piece);
-//        fprintf(fichier, "%lu ", nouveau->surface);
-//        fprintf(fichier, "%lu ", nouveau->loyer);
-//        fprintf(fichier, "%lu\n", nouveau->charge);
-//        listeAnnonce = listeAnnonce->suivant;
-//    }
-//    fclose(fichier);
-//    printf("Sauvegarde reussi!");
+    ListeUser *ListeUser = PListeUser;
+    
+    while(ListeUser != NULL)
+    {
+        User *user = ListeUser->user;
+        if (user->id > max){
+            max = user->id;
+        }
+        ListeUser = ListeUser->suivant;
+    }
+    return ++max;
 }
 
-//Charge une liste d'annonce à partir d'un fichier
-ListeArray charger(char cheminFichier[])
+//Sauvegarde la liste d'user dans un fichier
+void sauvegarder(PListeUser PListeUser, char cheminFichier[])
 {
-    ListeArray listeArray = NULL;
+    FILE * fichier =fopen(cheminFichier,"w");
+    if(fichier == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+    
+    ListeUser *listeUser = PListeUser;
+    while(listeUser != NULL)
+    {
+        User *nouveau = listeUser->user;
+        fprintf(fichier, "%d;", nouveau->id);
+        fprintf(fichier, "%s;", nouveau->nom);
+        fprintf(fichier, "%s;", nouveau->prenom);
+        fprintf(fichier, "%s;", nouveau->metier);
+        fprintf(fichier, "%s\n", nouveau->numero);
+        listeUser = listeUser->suivant;
+    }
+    fclose(fichier);
+    printf("Sauvegarde reussi!");
+}
+
+//Charge une liste d'user à partir d'un fichier
+PListeUser charger(char cheminFichier[])
+{
+    PListeUser PListeUser = NULL;
     FILE * fichier =fopen(cheminFichier,"r");
     if(fichier == NULL)
     {
@@ -152,10 +173,12 @@ ListeArray charger(char cheminFichier[])
         strcpy(numero, getfield(tmp, 5));
         
         
-        listeArray=ajouterUser( listeArray, id, nom, prenom, metier, numero);
+        PListeUser=ajouterUser( PListeUser, id, nom, prenom, metier, numero);
         free(tmp);
     }
     
     fclose(fichier);
-    return listeArray;
+    return PListeUser;
 }
+
+/** Compte function **/

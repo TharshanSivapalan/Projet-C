@@ -11,6 +11,12 @@
 #include <ctype.h>
 #include <errno.h>
 
+static const char PATH_FILE[] = "/Users/camille/Dropbox/test.csv";
+
+
+/********************* STRUCTURE *************************/
+
+// user struct
 typedef struct User
 {
     int id;
@@ -26,11 +32,44 @@ typedef struct ListeUser
     struct ListeUser *suivant;
 }ListeUser;
 
-typedef User * Liste;
-typedef ListeUser * ListeArray;
+typedef User * LUser;
+typedef ListeUser * PListeUser;
 
+
+// compte struct
+typedef struct Compte
+{
+    int id;
+    char nom[50];
+    char prenom[50];
+    char metier[50];
+    char numero[12];
+}Compte;
+
+typedef struct ListeCompte
+{
+    Compte *compte;
+    struct ListeCompte *suivant;
+}ListeCompte;
+
+typedef Compte * LCompte;
+typedef ListeCompte * PListeCompte;
+
+
+/********************* FUNCTION *************************/
+
+
+// global function
 const char* getfield(char* line, int num);
-void afficher(ListeArray listeArray);
-ListeArray ajouterUser(ListeArray ListeArray, int id, char nom[], char prenom[], char metier[], char numero[]);
-void sauvegarder(ListeArray listeArray,char cheminFichier[]);
-ListeArray charger(char cheminFichier[]);
+
+// user function
+void displayUser(User *user);
+void afficherAllUserList(PListeUser PListeUser);
+int newId(PListeUser PListeUser);
+PListeUser ajouterUser(PListeUser PListeUser, int id, char nom[], char prenom[], char metier[], char numero[]);
+void sauvegarder(PListeUser PListeUser,char cheminFichier[]);
+PListeUser charger(char cheminFichier[]);
+
+// compte function
+
+

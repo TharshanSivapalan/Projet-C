@@ -3,35 +3,62 @@
 
 int main()
 {
-    //afficher(charger("/Users/camille/Dropbox/test.csv"));
     int choix, temp, status;
+    char nom[50];
+    char prenom[50];
+    char metier[50];
+    char numero[12];
+    PListeUser PListeUser = charger(PATH_FILE);
     while(1!=0)
     {
         do {
-            printf("\n\t\tBanque\n\n",138);
-            printf("Gestion des clients\n",138);
+            printf("\n\t\tBanque\n\n");
+            printf("Gestion des clients: \n");
+            printf("\t 1) Ajouter\n");
+            printf("\t 2) Modifier\n");
+            printf("\t 3) Supprimer\n");
+            printf("\t 4) Recherche\n\n");
             
-            printf("\tPour ajouter  entrez '1'\n");
-            printf("\tPour modifier entrez '2'\n",138);
-            printf("\tPour supprimez entrez '3'\n");
-            printf("\tPour rechercher entrez '4'\n");
-            printf("Gestion des comptes\n",138);
-            printf("\tPour un nouveau compte '5'\n",138);
-            printf("\tPour consulter '6'\n");
-            printf("\tPour fermeture du compte '7'\n");
-            printf("Gestion des operations\n",138);
-            printf("\tPour faire un depot '8'\n",133);
-            printf("\tPour faire un retrait'9'\n",133);
-            printf("\tPour efftcuer un virement'10'\n",133);
+            printf("Gestion des comptes:\n");
+            printf("\t 5) Nouveau\n");
+            printf("\t 6) Consulter\n");
+            printf("\t 7) Fermeture\n\n");
+            
+            printf("Gestion des operations:\n");
+            printf("\t 8) Depot\n");
+            printf("\t 7) Retrait\n");
+            printf("\t 9) Virement\n\n");
+            
+            printf("0 pour exit");
+            
             printf("\nVeuillez entrer votre choix : ");
             status = scanf("%d",&choix);
-            system("cls");
-        }
-        while((status!=1) && (((temp=getchar()) != EOF) &&(temp != '\n')) || (choix<1) || (choix>10));
+            // test avec linux
+            //system("clear");
+        } while((status!=1) && (((temp=getchar()) != EOF) &&(temp != '\n')) || (choix<0) || (choix>10));
         switch(choix)
         {
+            case 0 :
+                printf("Au revoir :)\n");
+                return 0;
+                break;
             case 1 :
-                printf("C'est le choix 1");
+                
+                printf("\nNom : ");
+                scanf("%s",nom);
+                
+                printf("\nPrenom : ");
+                scanf("%s",prenom);
+                
+                printf("\nMetier : ");
+                scanf("%s", metier);
+                
+                printf("\nNumero : ");
+                scanf("%s", numero);
+                
+                PListeUser = ajouterUser(PListeUser, newId(PListeUser), nom, prenom, metier, numero);
+                sauvegarder(PListeUser, PATH_FILE);
+                
                 break;
             case 2 :
                 printf("C'est le choix 2");
