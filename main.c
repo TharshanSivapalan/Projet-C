@@ -4,11 +4,15 @@
 int main()
 {
     int choix, temp, status;
+    
+    int id;
+    PUser PUser = NULL;
     char nom[50];
     char prenom[50];
     char metier[50];
     char numero[12];
-    PListeUser PListeUser = charger(PATH_FILE);
+    PListeUser PListeUser = chargerUser(PATH_FILE);
+    
     while(1!=0)
     {
         do {
@@ -56,12 +60,34 @@ int main()
                 printf("\nNumero : ");
                 scanf("%s", numero);
                 
-                PListeUser = ajouterUser(PListeUser, newId(PListeUser), nom, prenom, metier, numero);
-                sauvegarder(PListeUser, PATH_FILE);
+                PListeUser = ajouterUser(PListeUser, newIdUser(PListeUser), nom, prenom, metier, numero);
+                sauvegarderUser(PListeUser, PATH_FILE);
                 
                 break;
             case 2 :
-                printf("C'est le choix 2");
+                
+                printf("\nID : ");
+                scanf("%d",&id);
+                
+                if ((PUser = findUser(id, PListeUser)) != NULL){
+                    
+                    printf("\nNom[%s] : ", PUser->nom);
+                    scanf("%s", PUser->nom);
+                    
+                    printf("\nPrenom[%s] : ", PUser->prenom);
+                    scanf("%s", PUser->prenom);
+                    
+                    printf("\nMetier[%s] : ", PUser->metier);
+                    scanf("%s", PUser->metier);
+                    
+                    printf("\nNumero[%s] : ", PUser->numero);
+                    scanf("%s", PUser->numero);
+                    
+                    sauvegarderUser(PListeUser, PATH_FILE);
+                } else {
+                    printf("\nUser non trouvé");
+                }
+                
                 break;
             case 3 :
                 printf("C'est le choix 3");

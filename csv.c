@@ -67,6 +67,21 @@ PListeUser ajouterUser(PListeUser PListeUser, int id, char nom[], char prenom[],
     }
 }
 
+PUser findUser(int id, PListeUser PListeUser)
+{
+    ListeUser *ListeUser = PListeUser;
+    while(ListeUser != NULL)
+    {
+        User *user = ListeUser->user;
+        if (id == user->id){
+            return user;
+        }
+        ListeUser = ListeUser->suivant;
+    }
+
+    return NULL;
+}
+
 //Afficher les annonces contenue dans la liste chainée
 void afficherUserList(PListeUser PListeUser)
 {
@@ -95,7 +110,7 @@ void displayUser(User *user)
 }
 
 // return new id
-int newId(PListeUser PListeUser)
+int newIdUser(PListeUser PListeUser)
 {
     int max = 0;
     
@@ -113,7 +128,7 @@ int newId(PListeUser PListeUser)
 }
 
 //Sauvegarde la liste d'user dans un fichier
-void sauvegarder(PListeUser PListeUser, char cheminFichier[])
+void sauvegarderUser(PListeUser PListeUser, char cheminFichier[])
 {
     FILE * fichier =fopen(cheminFichier,"w");
     if(fichier == NULL)
@@ -137,7 +152,7 @@ void sauvegarder(PListeUser PListeUser, char cheminFichier[])
 }
 
 //Charge une liste d'user à partir d'un fichier
-PListeUser charger(char cheminFichier[])
+PListeUser chargerUser(char cheminFichier[])
 {
     PListeUser PListeUser = NULL;
     FILE * fichier =fopen(cheminFichier,"r");

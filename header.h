@@ -32,7 +32,7 @@ typedef struct ListeUser
     struct ListeUser *suivant;
 }ListeUser;
 
-typedef User * LUser;
+typedef User * PUser;
 typedef ListeUser * PListeUser;
 
 
@@ -64,11 +64,12 @@ const char* getfield(char* line, int num);
 
 // user function
 void displayUser(User *user);
+PUser findUser(int id, PListeUser PListeUser);
 void afficherAllUserList(PListeUser PListeUser);
-int newId(PListeUser PListeUser);
+int newIdUser(PListeUser PListeUser);
 PListeUser ajouterUser(PListeUser PListeUser, int id, char nom[], char prenom[], char metier[], char numero[]);
-void sauvegarder(PListeUser PListeUser,char cheminFichier[]);
-PListeUser charger(char cheminFichier[]);
+void sauvegarderUser(PListeUser PListeUser,char cheminFichier[]);
+PListeUser chargerUser(char cheminFichier[]);
 
 // compte function
 
