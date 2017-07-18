@@ -151,6 +151,35 @@ void sauvegarderUser(PListeUser PListeUser, char cheminFichier[])
     printf("Sauvegarde reussi!");
 }
 
+// supprime un user
+PListeUser supprimerUser(int id, PListeUser PListeUser)
+{
+    ListeUser *FirstList = PListeUser;
+    User *FirstUser = FirstList->user;
+    if (id == FirstUser->id){
+        PListeUser = PListeUser->suivant;
+        return PListeUser;
+    }
+    ListeUser *CurrentList = FirstList->suivant;
+    
+    while(CurrentList != NULL)
+    {
+        
+        User *CurrentUser = CurrentList->user;
+        
+        if (id == CurrentUser->id){
+            FirstList->suivant = CurrentList->suivant;
+            return PListeUser;
+        }
+        
+        FirstList = CurrentList;
+        CurrentList = FirstList->suivant;
+        
+    }
+    
+    return PListeUser;
+}
+
 //Charge une liste d'user à partir d'un fichier
 PListeUser chargerUser(char cheminFichier[])
 {

@@ -70,6 +70,7 @@ int newIdUser(PListeUser PListeUser);
 PListeUser ajouterUser(PListeUser PListeUser, int id, char nom[], char prenom[], char metier[], char numero[]);
 void sauvegarderUser(PListeUser PListeUser,char cheminFichier[]);
 PListeUser chargerUser(char cheminFichier[]);
+PListeUser supprimerUser(int id, PListeUser PListeUser);
 
 // compte function
 

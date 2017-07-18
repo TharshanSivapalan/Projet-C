@@ -90,22 +90,30 @@ int main()
                 
                 break;
             case 3 :
-                printf("C'est le choix 3");
+                
+                printf("\nID : ");
+                scanf("%d",&id);
+                
+                PListeUser = supprimerUser(id, PListeUser);
+                sauvegarderUser(PListeUser, PATH_FILE);
+                
                 break;
             case 4 :
                 printf("C'est le choix 4");
                 break;
+                
                 
             case 5 :
                 printf("C'est le choix 5");
                 break;
             case 6 :
                 printf("C'est le choix 6");
-                
                 break;
             case 7 :
                 printf("C'est le choix 7");
                 break;
+                
+                
             case 8 :
                 printf("C'est le choix 8");
                 break;
