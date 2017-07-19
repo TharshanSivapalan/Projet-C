@@ -11,7 +11,8 @@
 #include <ctype.h>
 #include <errno.h>
 
-static const char PATH_FILE[] = "/Users/camille/Dropbox/test.csv";
+static const char PATH_FILE_USER[] = "/Users/camille/Dropbox/user.csv";
+static const char PATH_FILE_COMPTE[] = "/Users/camille/Dropbox/compte.csv";
 
 
 /********************* STRUCTURE *************************/
@@ -40,10 +41,10 @@ typedef ListeUser * PListeUser;
 typedef struct Compte
 {
     int id;
-    char nom[50];
-    char prenom[50];
-    char metier[50];
-    char numero[12];
+    int idUser;
+    int solde;
+    int taux;
+    int duree;
 }Compte;
 
 typedef struct ListeCompte
@@ -52,7 +53,7 @@ typedef struct ListeCompte
     struct ListeCompte *suivant;
 }ListeCompte;
 
-typedef Compte * LCompte;
+typedef Compte * PCompte;
 typedef ListeCompte * PListeCompte;
 
 
@@ -73,5 +74,10 @@ PListeUser chargerUser(char cheminFichier[]);
 PListeUser supprimerUser(int id, PListeUser PListeUser);
 
 // compte function
-
-
+PListeCompte ajouterCompte(PListeCompte PListeCompte, int id, int idUser, int solde, int taux, int duree);
+void sauvegarderCompte(PListeCompte PListeCompte, char cheminFichier[]);
+PListeCompte supprimerCompte(int id, PListeCompte PListeCompte);
+PListeCompte chargerCompte(char cheminFichier[]);
+int newIdCompte(PListeCompte PListeCompte);
+void displayCompteByUser(int idUser,PListeCompte PListeCompte);
+void displayCompte(Compte *compte);

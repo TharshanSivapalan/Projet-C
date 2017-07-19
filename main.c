@@ -3,6 +3,15 @@
 
 int main()
 {
+    
+    // Crée le fichier s'il n'existe pas
+    FILE *test = fopen(PATH_FILE_USER, "a");
+    fclose(test);
+    
+    // Crée le fichier s'il n'existe pas
+    test = fopen(PATH_FILE_COMPTE, "a");
+    fclose(test);
+    
     int choix, temp, status;
     
     int id;
@@ -11,7 +20,13 @@ int main()
     char prenom[50];
     char metier[50];
     char numero[12];
-    PListeUser PListeUser = chargerUser(PATH_FILE);
+    PListeUser PListeUser = chargerUser(PATH_FILE_USER);
+    
+    int idUser;
+    int solde;
+    int taux;
+    int duree;
+    PListeCompte PListeCompte = chargerCompte(PATH_FILE_COMPTE);
     
     while(1!=0)
     {
@@ -61,7 +76,7 @@ int main()
                 scanf("%s", numero);
                 
                 PListeUser = ajouterUser(PListeUser, newIdUser(PListeUser), nom, prenom, metier, numero);
-                sauvegarderUser(PListeUser, PATH_FILE);
+                sauvegarderUser(PListeUser, PATH_FILE_USER);
                 
                 break;
             case 2 :
@@ -83,7 +98,7 @@ int main()
                     printf("\nNumero[%s] : ", PUser->numero);
                     scanf("%s", PUser->numero);
                     
-                    sauvegarderUser(PListeUser, PATH_FILE);
+                    sauvegarderUser(PListeUser, PATH_FILE_USER);
                 } else {
                     printf("\nUser non trouvé");
                 }
@@ -95,7 +110,7 @@ int main()
                 scanf("%d",&id);
                 
                 PListeUser = supprimerUser(id, PListeUser);
-                sauvegarderUser(PListeUser, PATH_FILE);
+                sauvegarderUser(PListeUser, PATH_FILE_USER);
                 
                 break;
             case 4 :
@@ -104,13 +119,45 @@ int main()
                 
                 
             case 5 :
-                printf("C'est le choix 5");
+                
+                printf("\nID user : ");
+                scanf("%d", &idUser);
+                
+                if (findUser(idUser, PListeUser) == NULL){
+                    printf("Pas de user avec cette id");
+                    break;
+                }
+                
+                printf("\nSolde : ");
+                scanf("%d", &solde);
+                
+                printf("\nTaux : ");
+                scanf("%d", &taux);
+                
+                printf("\nDuree : ");
+                scanf("%d", &duree);
+                
+                PListeCompte = ajouterCompte(PListeCompte, newIdCompte(PListeCompte), idUser, solde, taux, duree);
+                sauvegarderCompte(PListeCompte, PATH_FILE_COMPTE);
+                
                 break;
             case 6 :
-                printf("C'est le choix 6");
+                printf("\nID user : ");
+                scanf("%d", &idUser);
+                
+                if (findUser(idUser, PListeUser) == NULL){
+                    printf("Pas de user avec cette id");
+                    break;
+                }
+                
+                displayCompteByUser(idUser, PListeCompte);
                 break;
             case 7 :
-                printf("C'est le choix 7");
+                printf("\nID du compte : ");
+                scanf("%d",&id);
+                
+                PListeCompte = supprimerCompte(id, PListeCompte);
+                sauvegarderCompte(PListeCompte, PATH_FILE_COMPTE);
                 break;
                 
                 

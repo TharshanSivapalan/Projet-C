@@ -226,3 +226,189 @@ PListeUser chargerUser(char cheminFichier[])
 }
 
 /** Compte function **/
+
+
+PListeCompte ajouterCompte(PListeCompte PListeCompte, int id, int idUser, int solde, int taux, int duree)
+{
+    ListeCompte *listeNouveau = NULL;
+    listeNouveau = malloc(sizeof(*listeNouveau));
+    Compte *nouveau = NULL;
+    nouveau = malloc(sizeof(*nouveau));
+    if(listeNouveau == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+    if(nouveau == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+    
+    nouveau->id = id;
+    nouveau->idUser = idUser;
+    nouveau->solde = solde;
+    nouveau->taux = taux;
+    nouveau->duree = duree;
+    
+    listeNouveau->compte = nouveau;
+    listeNouveau->suivant = NULL;
+    if(PListeCompte == NULL)
+    {
+        return listeNouveau;
+    }
+    else
+    {
+        //Sinon, on parcourt la liste jusqu'au dernier élement
+        ListeCompte *curseur = PListeCompte;
+        while(curseur->suivant != NULL)
+        {
+            curseur = curseur->suivant;
+        }
+        //On positionne le nouvel élément comme le dernier
+        curseur->suivant = listeNouveau;
+        //On retourne la liste
+        return PListeCompte;
+    }
+}
+
+
+//Sauvegarde la liste de compte dans un fichier
+void sauvegarderCompte(PListeCompte PListeCompte, char cheminFichier[])
+{
+    FILE * fichier =fopen(cheminFichier,"w");
+    if(fichier == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+    
+    ListeCompte *ListeCompte = PListeCompte;
+    while(ListeCompte != NULL)
+    {
+        Compte *nouveau = ListeCompte->compte;
+        fprintf(fichier, "%d;", nouveau->id);
+        fprintf(fichier, "%d;", nouveau->idUser);
+        fprintf(fichier, "%d;", nouveau->solde);
+        fprintf(fichier, "%d;", nouveau->taux);
+        fprintf(fichier, "%d\n", nouveau->duree);
+        ListeCompte = ListeCompte->suivant;
+    }
+    fclose(fichier);
+    printf("Sauvegarde reussi!");
+}
+
+// supprime un Compte
+PListeCompte supprimerCompte(int id, PListeCompte PListeCompte)
+{
+    ListeCompte *FirstList = PListeCompte;
+    Compte *FirstCompte = FirstList->compte;
+    if (id == FirstCompte->id){
+        PListeCompte = PListeCompte->suivant;
+        return PListeCompte;
+    }
+    ListeCompte *CurrentList = FirstList->suivant;
+    
+    while(CurrentList != NULL)
+    {
+        
+        Compte *CurrentCompte = CurrentList->compte;
+        
+        if (id == CurrentCompte->id){
+            FirstList->suivant = CurrentList->suivant;
+            return PListeCompte;
+        }
+        
+        FirstList = CurrentList;
+        CurrentList = FirstList->suivant;
+        
+    }
+    
+    return PListeCompte;
+}
+
+//Charge une liste de compte à partir d'un fichier
+PListeCompte chargerCompte(char cheminFichier[])
+{
+    PListeCompte PListeCompte = NULL;
+    FILE * fichier =fopen(cheminFichier,"r");
+    if(fichier == NULL)
+    {
+        printf("Fichier vide ou introuvable");
+        exit(EXIT_FAILURE);
+    }
+    rewind(fichier);
+    
+    int id;
+    int idUser;
+    int solde;
+    int taux;
+    int duree;
+    
+    char line[1024];
+    while (fgets(line, 1024, fichier))
+    {
+        char* tmp = strdup(line);
+        id =  atoi(getfield(tmp, 1));
+        
+        tmp = strdup(line);
+        idUser =  atoi(getfield(tmp, 2));
+        
+        tmp = strdup(line);
+        solde =  atoi(getfield(tmp, 3));
+        
+        tmp = strdup(line);
+        taux =  atoi(getfield(tmp, 4));
+        
+        tmp = strdup(line);
+        duree =  atoi(getfield(tmp, 5));
+        
+        
+        PListeCompte=ajouterCompte( PListeCompte, id, idUser, solde, taux, duree);
+        free(tmp);
+    }
+    
+    fclose(fichier);
+    return PListeCompte;
+}
+
+// return new id
+int newIdCompte(PListeCompte PListeCompte)
+{
+    int max = 0;
+    
+    ListeCompte *ListeCompte = PListeCompte;
+    
+    while(ListeCompte != NULL)
+    {
+        Compte *compte = ListeCompte->compte;
+        if (compte->id > max){
+            max = compte->id;
+        }
+        ListeCompte = ListeCompte->suivant;
+    }
+    return ++max;
+}
+
+void displayCompteByUser(int idUser,PListeCompte PListeCompte)
+{
+    ListeCompte *ListeCompte = PListeCompte;
+    int i=0;
+    while(ListeCompte != NULL)
+    {
+        Compte *compte = ListeCompte->compte;
+        if (compte->idUser == idUser){
+            displayCompte(compte);
+            i++;
+        }
+        ListeCompte = ListeCompte->suivant;
+    }
+    
+    printf("\(%d Compte trouves)\n",i);
+}
+
+void displayCompte(Compte *compte)
+{
+    printf("Compte id : %d", compte->id);
+    printf("\t solde : %d", compte->solde);
+    printf("\n");
+}
+
+
