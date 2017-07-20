@@ -22,6 +22,7 @@ int main()
     char numero[12];
     PListeUser PListeUser = chargerUser(PATH_FILE_USER);
     
+    int idCompte;
     int idUser;
     int solde;
     int taux;
@@ -45,8 +46,8 @@ int main()
             
             printf("Gestion des operations:\n");
             printf("\t 8) Depot\n");
-            printf("\t 7) Retrait\n");
-            printf("\t 9) Virement\n\n");
+            printf("\t 9) Retrait\n");
+            printf("\t 10) Virement\n\n");
             
             printf("0 pour exit");
             
@@ -162,13 +163,40 @@ int main()
                 
                 
             case 8 :
-                printf("C'est le choix 8");
+                
+                printf("\nID Compte : ");
+                scanf("%d", &idCompte);
+                
+                printf("\n Somme ajouté : ");
+                scanf("%d", &solde);
+                
+                depot(idCompte, PListeCompte, solde);
+                sauvegarderCompte(PListeCompte, PATH_FILE_COMPTE);
                 break;
             case 9 :
-                printf("C'est le choix 9");
+                
+                printf("\nID Compte : ");
+                scanf("%d", &idCompte);
+                
+                printf("\n Somme retiré : ");
+                scanf("%d", &solde);
+                
+                retrait(idCompte, PListeCompte, solde);
+                sauvegarderCompte(PListeCompte, PATH_FILE_COMPTE);
                 break;
             case 10 :
-                printf("C'est le choix 10");
+                
+                printf("\nID Compte retrait : ");
+                scanf("%d", &id);
+                
+                printf("\nID Compte soldé : ");
+                scanf("%d", &idCompte);
+                
+                printf("\n Somme viré : ");
+                scanf("%d", &solde);
+                
+                virement(id, idCompte, PListeCompte, solde);
+                sauvegarderCompte(PListeCompte, PATH_FILE_COMPTE);
                 break;
                 
         }

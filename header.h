@@ -81,3 +81,9 @@ PListeCompte chargerCompte(char cheminFichier[]);
 int newIdCompte(PListeCompte PListeCompte);
 void displayCompteByUser(int idUser,PListeCompte PListeCompte);
 void displayCompte(Compte *compte);
+PCompte findCompte(int id, PListeCompte PListeCompte);
+
+// operation
+void depot(int id, PListeCompte PListeCompte, int solde);
+void retrait(int id, PListeCompte PListeCompte, int solde);
+void virement(int id, int idCompte, PListeCompte PListeCompte, int solde);

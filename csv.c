@@ -411,4 +411,56 @@ void displayCompte(Compte *compte)
     printf("\n");
 }
 
+PCompte findCompte(int id, PListeCompte PListeCompte)
+{
+    ListeCompte *ListeCompte = PListeCompte;
+    while(ListeCompte != NULL)
+    {
+        Compte *compte = ListeCompte->compte;
+        if (id == compte->id){
+            return compte;
+        }
+        ListeCompte = ListeCompte->suivant;
+    }
+    
+    return NULL;
+}
 
+// Operation compte
+
+void depot(int id, PListeCompte PListeCompte, int solde)
+{
+    PCompte PCompte = NULL;
+    if ((PCompte = findCompte(id, PListeCompte)) != NULL){
+        PCompte->solde += solde;
+    } else {
+        printf("Compte non trouvé");
+    }
+    
+}
+
+void retrait(int id, PListeCompte PListeCompte, int solde)
+{
+    PCompte PCompte = NULL;
+    if ((PCompte = findCompte(id, PListeCompte)) != NULL){
+        PCompte->solde -= solde;
+    } else {
+        printf("Compte non trouvé");
+    }
+    
+}
+
+void virement(int idRetrait, int idSolde, PListeCompte PListeCompte, int solde)
+{
+    PCompte compteRetrait = NULL;
+    PCompte compteSolde = NULL;
+    
+    if ((compteRetrait = findCompte(idRetrait, PListeCompte)) != NULL && (compteSolde = findCompte(idSolde, PListeCompte)) != NULL ){
+        printf("pourtant\n");
+        compteRetrait->solde -= solde;
+        compteSolde->solde += solde;
+        printf("%d", compteSolde->solde);
+    } else {
+        printf("Compte non trouvé");
+    }
+}
