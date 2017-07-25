@@ -12,6 +12,10 @@ int main()
     test = fopen(PATH_FILE_COMPTE, "a");
     fclose(test);
     
+    // Crée le fichier s'il n'existe pas
+    test = fopen(PATH_FILE_HISTO, "a");
+    fclose(test);
+    
     int choix, temp, status;
     
     int id;
@@ -28,6 +32,10 @@ int main()
     int taux;
     int duree;
     PListeCompte PListeCompte = chargerCompte(PATH_FILE_COMPTE);
+    
+    char historyBuffer[1024];
+    
+    
     
     while(1!=0)
     {
@@ -49,13 +57,14 @@ int main()
             printf("\t 9) Retrait\n");
             printf("\t 10) Virement\n\n");
             
+            printf("\t 11) Afficher l'historique\n\n");
+            
             printf("0 pour exit");
             
             printf("\nVeuillez entrer votre choix : ");
             status = scanf("%d",&choix);
-            // test avec linux
-            //system("clear");
-        } while((status!=1) && (((temp=getchar()) != EOF) &&(temp != '\n')) || (choix<0) || (choix>10));
+        
+        } while((status!=1) && (((temp=getchar()) != EOF) &&(temp != '\n')) || (choix<0) || (choix>11));
         switch(choix)
         {
             case 0 :
@@ -79,6 +88,9 @@ int main()
                 PListeUser = ajouterUser(PListeUser, newIdUser(PListeUser), nom, prenom, metier, numero);
                 sauvegarderUser(PListeUser, PATH_FILE_USER);
                 
+                // ajoute dans l'historique
+                snprintf(historyBuffer, sizeof(historyBuffer), "Add new user : %s %s \n", nom, prenom);
+                addInHistory(historyBuffer);
                 break;
             case 2 :
                 
@@ -100,6 +112,10 @@ int main()
                     scanf("%s", PUser->numero);
                     
                     sauvegarderUser(PListeUser, PATH_FILE_USER);
+                    
+                    // ajoute dans l'historique
+                    snprintf(historyBuffer, sizeof(historyBuffer), "Edit user id : %d \n", PUser->id);
+                    addInHistory(historyBuffer);
                 } else {
                     printf("\nUser non trouvé");
                 }
@@ -113,9 +129,15 @@ int main()
                 PListeUser = supprimerUser(id, PListeUser);
                 sauvegarderUser(PListeUser, PATH_FILE_USER);
                 
+                // ajoute dans l'historique
+                snprintf(historyBuffer, sizeof(historyBuffer), "Remove user id : %d \n", PUser->id);
+                addInHistory(historyBuffer);
+                
                 break;
             case 4 :
-                printf("C'est le choix 4");
+                printf("Non fait donc affiche tous les utilisateurs\n");
+                printf("-------------------------------------------\n");
+                afficherUserList(PListeUser);
                 break;
                 
                 
@@ -141,6 +163,10 @@ int main()
                 PListeCompte = ajouterCompte(PListeCompte, newIdCompte(PListeCompte), idUser, solde, taux, duree);
                 sauvegarderCompte(PListeCompte, PATH_FILE_COMPTE);
                 
+                // ajoute dans l'historique
+                snprintf(historyBuffer, sizeof(historyBuffer), "New compte for user id : %d \n", idUser);
+                addInHistory(historyBuffer);
+                
                 break;
             case 6 :
                 printf("\nID user : ");
@@ -159,6 +185,10 @@ int main()
                 
                 PListeCompte = supprimerCompte(id, PListeCompte);
                 sauvegarderCompte(PListeCompte, PATH_FILE_COMPTE);
+                
+                // ajoute dans l'historique
+                snprintf(historyBuffer, sizeof(historyBuffer), "Remove compte id : %d \n", id);
+                addInHistory(historyBuffer);
                 break;
                 
                 
@@ -172,6 +202,10 @@ int main()
                 
                 depot(idCompte, PListeCompte, solde);
                 sauvegarderCompte(PListeCompte, PATH_FILE_COMPTE);
+                
+                // ajoute dans l'historique
+                snprintf(historyBuffer, sizeof(historyBuffer), "Add %d in compte id : %d \n", solde, idCompte);
+                addInHistory(historyBuffer);
                 break;
             case 9 :
                 
@@ -183,6 +217,10 @@ int main()
                 
                 retrait(idCompte, PListeCompte, solde);
                 sauvegarderCompte(PListeCompte, PATH_FILE_COMPTE);
+                
+                // ajoute dans l'historique
+                snprintf(historyBuffer, sizeof(historyBuffer), "Withdraw %d in compte id : %d \n", solde, idCompte);
+                addInHistory(historyBuffer);
                 break;
             case 10 :
                 
@@ -197,7 +235,16 @@ int main()
                 
                 virement(id, idCompte, PListeCompte, solde);
                 sauvegarderCompte(PListeCompte, PATH_FILE_COMPTE);
+                
+                // ajoute dans l'historique
+                snprintf(historyBuffer, sizeof(historyBuffer), "Transfer %d from compte %d to compte %d\n", solde, id, idCompte);
+                addInHistory(historyBuffer);
                 break;
+                
+            case 11 :
+                displayHistory();
+                break;
+
                 
         }
     }

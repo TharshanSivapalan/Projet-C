@@ -464,3 +464,35 @@ void virement(int idRetrait, int idSolde, PListeCompte PListeCompte, int solde)
         printf("Compte non trouvé");
     }
 }
+
+// history
+void addInHistory(char sentence[])
+{
+    char dateBuffer[100];
+    struct tm * timeinfo;
+    time_t rawtime;
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+    snprintf(dateBuffer, sizeof(dateBuffer), "%s", asctime(timeinfo));
+    // supprimer le retour a la ligne du asctime
+    dateBuffer[strlen(dateBuffer) - 1] = 0;
+    snprintf(dateBuffer, sizeof(dateBuffer), "%s | ", dateBuffer);
+    
+    FILE * fichier =fopen(PATH_FILE_HISTO,"a");
+    fputs(strcat(dateBuffer, sentence), fichier);
+    fclose(fichier);
+}
+
+void displayHistory()
+{
+    char chaine[500];
+    FILE * fichier =fopen(PATH_FILE_HISTO,"r");
+    
+    if (fichier != NULL)
+    {
+        fgets(chaine, 500, fichier);
+        printf("%s", chaine);
+    }
+    fclose(fichier);
+}
+
